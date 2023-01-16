@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:shop_flutter_app/providers/products.dart';
 import 'package:shop_flutter_app/widgets/product_grid.dart';
@@ -22,7 +24,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
     final productsData = Provider.of<Products>(context, listen: false);
     final products =
         showFavorites ? productsData.favorites : productsData.items;
-    final productsContainer = Provider.of<Products>(context, listen: false);
+    //final productsContainer = Provider.of<Products>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('My shop'),
@@ -33,12 +35,12 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
             }),
             itemBuilder: (_) => [
               const PopupMenuItem(
-                child: Text('Only favorites'),
                 value: FilterOptions.Favorites,
+                child: Text('Only favorites'),
               ),
               const PopupMenuItem(
-                child: Text('Show all'),
                 value: FilterOptions.All,
+                child: Text('Show all'),
               ),
             ],
             icon: const Icon(Icons.more_vert),

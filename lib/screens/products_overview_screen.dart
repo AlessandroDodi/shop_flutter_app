@@ -1,7 +1,9 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:shop_flutter_app/providers/cart.dart';
 import 'package:shop_flutter_app/providers/products.dart';
+import 'package:shop_flutter_app/widgets/badge.dart';
 import 'package:shop_flutter_app/widgets/product_grid.dart';
 import 'package:provider/provider.dart';
 
@@ -44,6 +46,17 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
               ),
             ],
             icon: const Icon(Icons.more_vert),
+          ),
+          Consumer<Cart>(
+            builder: ((_, value, child) => Badge(
+                  color: Colors.black,
+                  value: value.itemCount.toString(),
+                  child: child!,
+                )),
+            child: IconButton(
+              icon: const Icon(Icons.shopping_cart),
+              onPressed: () {},
+            ),
           ),
         ],
       ),

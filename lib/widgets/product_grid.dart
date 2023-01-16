@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_flutter_app/providers/product.dart';
 import 'package:shop_flutter_app/widgets/product_item.dart';
 
+// ignore: must_be_immutable
 class PrductGrid extends StatelessWidget with ChangeNotifier {
   final List<Product> loadedProducts;
   final bool showFavorites;

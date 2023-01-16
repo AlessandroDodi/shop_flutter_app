@@ -5,6 +5,7 @@ class Badge extends StatelessWidget {
   final String value;
   final Color color;
   const Badge({
+    super.key,
     required this.child,
     required this.value,
     required this.color,

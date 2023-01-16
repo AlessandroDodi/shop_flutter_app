@@ -4,10 +4,9 @@ import 'package:shop_flutter_app/providers/product.dart';
 import 'package:shop_flutter_app/widgets/product_item.dart';
 
 class PrductGrid extends StatelessWidget with ChangeNotifier {
-  PrductGrid(this.loadedProducts, {super.key});
-
   final List<Product> loadedProducts;
-
+  final bool showFavorites;
+  PrductGrid(this.loadedProducts, this.showFavorites, {super.key});
   @override
   Widget build(BuildContext context) {
     return GridView.builder(

@@ -14,13 +14,13 @@ class PrductGrid extends StatelessWidget with ChangeNotifier {
       padding: const EdgeInsets.all(8),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 3 / 2,
+        childAspectRatio: 1,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
       itemCount: loadedProducts.length,
-      itemBuilder: ((context, index) => ChangeNotifierProvider(
-            create: (context) => loadedProducts[index],
+      itemBuilder: ((context, index) => ChangeNotifierProvider.value(
+            value: loadedProducts[index],
             child: const ProductItem(),
           )),
     );

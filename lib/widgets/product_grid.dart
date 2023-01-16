@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shop_flutter_app/models/product.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_flutter_app/providers/product.dart';
 import 'package:shop_flutter_app/widgets/product_item.dart';
 
-class PrductGrid extends StatelessWidget {
-  const PrductGrid({
-    Key? key,
-    required this.loadedProducts,
-  }) : super(key: key);
+class PrductGrid extends StatelessWidget with ChangeNotifier {
+  PrductGrid(this.loadedProducts, {super.key});
 
   final List<Product> loadedProducts;
 
@@ -21,10 +19,9 @@ class PrductGrid extends StatelessWidget {
         mainAxisSpacing: 10,
       ),
       itemCount: loadedProducts.length,
-      itemBuilder: ((context, index) => ProductItem(
-            id: loadedProducts[index].id,
-            imageUrl: loadedProducts[index].imageUrl,
-            title: loadedProducts[index].title,
+      itemBuilder: ((context, index) => ChangeNotifierProvider(
+            create: (context) => loadedProducts[index],
+            child: const ProductItem(),
           )),
     );
   }

@@ -43,15 +43,15 @@ class _OrderItemState extends State<OrderItem> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '${e.title}',
-                              style: TextStyle(fontSize: 20),
+                              e.title,
+                              style: const TextStyle(fontSize: 20),
                             ),
-                            Divider(),
+                            const Divider(),
                             Text('${e.quantity}x \$${e.price}')
                           ])),
                 ]),
               ),
-            )
+            ),
         ],
       ),
     );

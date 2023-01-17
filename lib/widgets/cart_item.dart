@@ -51,7 +51,8 @@ class CartItem extends StatelessWidget {
               title,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            subtitle: Text('Total: \$${price * quantity}'),
+            subtitle:
+                Text('Total: \$${((price * 100).round() / 100) * quantity}'),
             trailing: Text('${quantity}x'),
           )),
         ),

@@ -4,19 +4,19 @@ import 'package:shop_flutter_app/providers/orders.dart' as ord;
 
 class OrderItem extends StatelessWidget {
   final ord.OrderItem order;
-  const OrderItem(this.order);
+  const OrderItem(this.order, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       child: Column(
         children: [
           ListTile(
             title: Text('\$${order.amount}'),
             subtitle: Text(DateFormat('dd MM yyyy').toString()),
             trailing: IconButton(
-              icon: Icon(Icons.abc),
+              icon: const Icon(Icons.abc),
               onPressed: () {},
             ),
           ),

@@ -80,8 +80,6 @@ class Products with ChangeNotifier {
 
   void updateProduct(String productId, Product newProduct) {
     var index = _items.indexWhere((element) => element.id == productId);
-    print(index);
-    print(newProduct.title);
     _items[index] = Product(
         description: newProduct.description,
         id: newProduct.id,

@@ -19,9 +19,10 @@ class CartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var cart = Provider.of<Cart>(context, listen: false);
     return Dismissible(
       onDismissed: (_) {
-        Provider.of<Cart>(context, listen: false).removeItem(productId);
+        cart.removeItem(productId);
       },
       confirmDismiss: (_) => showDialog(
         context: context,

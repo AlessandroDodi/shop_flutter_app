@@ -57,6 +57,7 @@ class Cart with ChangeNotifier {
 
   void removeItem(String productId) {
     _items.removeWhere((key, value) => value.id == productId);
+
     notifyListeners();
   }
 

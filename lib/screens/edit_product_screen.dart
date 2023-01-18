@@ -17,6 +17,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageUrlFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
   final _form = GlobalKey<FormState>();
+  var _isInit = true;
+
+  var _initValues = {
+    'title': '',
+    'description': '',
+    'price': '',
+    'imageUrl': '',
+  };
   var _editProduct =
       Product(description: '', id: '', imageUrl: '', price: 0, title: '');
 
@@ -31,14 +39,43 @@ class _EditProductScreenState extends State<EditProductScreen> {
     if (!isValid!) {
       return;
     }
-    _form.currentState?.save();
-    Provider.of<Products>(context, listen: false).addProduct(_editProduct);
+    if (_editProduct.id != '') {
+      Provider.of<Products>(context, listen: false)
+          .updateProduct(_editProduct.id, _editProduct);
+    } else {
+      _form.currentState?.save();
+      Provider.of<Products>(context, listen: false).addProduct(_editProduct);
+    }
+    Navigator.of(context).pop();
   }
 
   @override
   void initState() {
     super.initState();
+
     _imageUrlFocusNode.addListener(_updateImageUrl);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_isInit) {
+      final String? productId =
+          ModalRoute.of(context)?.settings.arguments as String?;
+      if (productId != null) {
+        final product =
+            Provider.of<Products>(context, listen: false).findById(productId);
+        _editProduct = product;
+        _initValues = {
+          'title': _editProduct.title,
+          'description': _editProduct.description,
+          'price': _editProduct.price.toString(),
+          'imageUrl': _editProduct.imageUrl,
+        };
+        _imageUrlController.text = _editProduct.imageUrl;
+      }
+    }
+    _isInit = false;
   }
 
   @override
@@ -76,6 +113,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     return null;
                   }),
                   textInputAction: TextInputAction.next,
+                  initialValue: _initValues['title'],
                   onFieldSubmitted: (_) =>
                       FocusScope.of(context).requestFocus(_priceFocusNode),
                   onSaved: (value) {
@@ -84,6 +122,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       description: _editProduct.description,
                       price: _editProduct.price,
                       id: _editProduct.id,
+                      isFavorite: _editProduct.isFavorite,
                       imageUrl: _editProduct.imageUrl,
                     );
                   },
@@ -93,6 +132,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Price',
                   ),
+                  initialValue: _initValues['price'],
                   validator: ((value) {
                     if (value == null) return 'Please provide a price';
                     if (double.tryParse(value) == null) {
@@ -123,6 +163,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Description',
                   ),
+                  initialValue: _initValues['description'],
                   validator: ((value) {
                     if (value == null || value == '') {
                       return 'Please provide a valid description';
@@ -135,6 +176,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       description: value ?? '',
                       price: _editProduct.price,
                       id: _editProduct.id,
+                      isFavorite: _editProduct.isFavorite,
                       imageUrl: _editProduct.imageUrl,
                     );
                   },
@@ -175,6 +217,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           onSaved: (value) {
                             _editProduct = Product(
                               title: _editProduct.title,
+                              isFavorite: _editProduct.isFavorite,
                               description: _editProduct.description,
                               price: _editProduct.price,
                               id: _editProduct.id,

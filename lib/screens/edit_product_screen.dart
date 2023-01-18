@@ -25,11 +25,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   void _saveForm() {
+    final isValid = _form.currentState?.validate();
+    if (!isValid!) {
+      return;
+    }
     _form.currentState?.save();
-    print(_editProduct.title);
-    print(_editProduct.description);
-    print(_editProduct.price);
-    print(_editProduct.imageUrl);
   }
 
   @override
@@ -51,7 +51,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit product page'),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.save))],
+        actions: [
+          IconButton(onPressed: _saveForm, icon: const Icon(Icons.save))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -64,6 +66,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Title',
                   ),
+                  validator: ((value) {
+                    if (value == null || value == '') {
+                      return 'Please provide a valid title';
+                    }
+                    return null;
+                  }),
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (_) =>
                       FocusScope.of(context).requestFocus(_priceFocusNode),
@@ -82,6 +90,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Price',
                   ),
+                  validator: ((value) {
+                    if (value == null) return 'Please provide a price';
+                    if (double.tryParse(value) == null) {
+                      return 'Please provide  a valid price';
+                    }
+                    if (double.parse(value) <= 0) {
+                      return 'Please provide a positive price';
+                    }
+                    return null;
+                  }),
                   onFieldSubmitted: (_) => FocusScope.of(context)
                       .requestFocus(_descriptionFocusNode),
                   focusNode: _priceFocusNode,
@@ -90,7 +108,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     _editProduct = Product(
                       title: _editProduct.title,
                       description: _editProduct.description,
-                      price: double.parse(value!),
+                      price: double.tryParse(value!) ?? 0,
                       id: _editProduct.id,
                       imageUrl: _editProduct.imageUrl,
                     );
@@ -102,6 +120,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Description',
                   ),
+                  validator: ((value) {
+                    if (value == null || value == '') {
+                      return 'Please provide a valid description';
+                    }
+                    return null;
+                  }),
                   onSaved: (value) {
                     _editProduct = Product(
                       title: _editProduct.title,
@@ -133,7 +157,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   _imageUrlController.text,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) =>
-                                      Text(''),
+                                      const Text(''),
                                 ),
                               ),
                       ),
@@ -154,6 +178,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               imageUrl: value ?? '',
                             );
                           },
+                          validator: ((value) {
+                            if (value == null || value == '') {
+                              return 'Please provide a valid image';
+                            }
+                            return null;
+                          }),
                           controller: _imageUrlController,
                           onEditingComplete: () {
                             setState(() {});

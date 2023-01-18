@@ -40,6 +40,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     if (_editProduct.id != '') {
+      print(_editProduct.id);
+      _form.currentState?.save();
       Provider.of<Products>(context, listen: false)
           .updateProduct(_editProduct.id, _editProduct);
     } else {
@@ -148,6 +150,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   focusNode: _priceFocusNode,
                   textInputAction: TextInputAction.next,
                   onSaved: (value) {
+                    print('on saved price');
+                    print(value);
                     _editProduct = Product(
                       title: _editProduct.title,
                       description: _editProduct.description,
@@ -155,6 +159,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       id: _editProduct.id,
                       imageUrl: _editProduct.imageUrl,
                     );
+                    print(_editProduct.price);
                   },
                 ),
                 TextFormField(

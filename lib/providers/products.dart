@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'product.dart';
 
 class Products with ChangeNotifier {
@@ -37,13 +39,25 @@ class Products with ChangeNotifier {
     ),
   ];
 
-  // var _showFavoritesOnly = false;
-
   List<Product> get items {
     return [..._items];
   }
 
   void addProduct(Product product) {
+    final url = Uri.parse(
+        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/products.json');
+    http
+        .post(
+          url,
+          body: json.encode({
+            'title': product.title,
+            'price': product.price,
+            'description': product.description,
+            'imageUrl': product.imageUrl,
+            'isFavorite': product.isFavorite,
+          }),
+        )
+        .then((response) {});
     final newValue = Product(
         description: product.description,
         id: DateTime.now().toString(),
@@ -63,16 +77,6 @@ class Products with ChangeNotifier {
   List<Product> get favorites {
     return [..._items.where((element) => element.isFavorite)];
   }
-
-  // void showFavoritesOnly() {
-  //   _showFavoritesOnly = true;
-  //   notifyListeners();
-  // }
-
-  // void showALl() {
-  //   _showFavoritesOnly = false;
-  //   notifyListeners();
-  // }
 
   Product findById(String id) {
     return _items.firstWhere((element) => element.id == id);

@@ -43,30 +43,30 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) {
     final url = Uri.parse(
         'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/products.json');
-    http
+    return http
         .post(
-          url,
-          body: json.encode({
-            'title': product.title,
-            'price': product.price,
-            'description': product.description,
-            'imageUrl': product.imageUrl,
-            'isFavorite': product.isFavorite,
-          }),
-        )
-        .then((response) {});
-    final newValue = Product(
-        description: product.description,
-        id: DateTime.now().toString(),
-        imageUrl: product.imageUrl,
-        price: product.price,
-        title: product.title);
-    _items.add(newValue);
-
-    notifyListeners();
+      url,
+      body: json.encode({
+        'title': product.title,
+        'price': product.price,
+        'description': product.description,
+        'imageUrl': product.imageUrl,
+        'isFavorite': product.isFavorite,
+      }),
+    )
+        .then((response) {
+      final newValue = Product(
+          description: product.description,
+          id: json.decode(response.body)['name'],
+          imageUrl: product.imageUrl,
+          price: product.price,
+          title: product.title);
+      _items.add(newValue);
+      notifyListeners();
+    });
   }
 
   void removeProduct(String productId) {

@@ -45,9 +45,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
           .updateProduct(_editProduct.id, _editProduct);
     } else {
       _form.currentState?.save();
-      Provider.of<Products>(context, listen: false).addProduct(_editProduct);
+      Provider.of<Products>(context, listen: false)
+          .addProduct(_editProduct)
+          .then((value) => Navigator.of(context).pop());
     }
-    Navigator.of(context).pop();
   }
 
   @override

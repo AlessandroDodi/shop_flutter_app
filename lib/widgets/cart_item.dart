@@ -9,7 +9,6 @@ class CartItem extends StatelessWidget {
   final int quantity;
   final String title;
   const CartItem({
-    super.key,
     required this.id,
     required this.price,
     required this.quantity,
@@ -19,10 +18,9 @@ class CartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var cart = Provider.of<Cart>(context, listen: false);
     return Dismissible(
       onDismissed: (_) {
-        cart.removeItem(productId);
+        Provider.of<Cart>(context, listen: false).removeItem(productId);
       },
       confirmDismiss: (_) => showDialog(
         context: context,

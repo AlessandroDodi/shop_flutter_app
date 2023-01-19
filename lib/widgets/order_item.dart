@@ -39,16 +39,18 @@ class _OrderItemState extends State<OrderItem> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListView(children: [
-                  ...widget.order.products.map((e) => Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              e.title,
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                            const Divider(),
-                            Text('${e.quantity}x \$${e.price}')
-                          ])),
+                  ...widget.order.products.map(
+                    (e) => Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            e.title,
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                          const Divider(),
+                          Text('${e.quantity}x \$${e.price}'),
+                        ]),
+                  ),
                 ]),
               ),
             ),

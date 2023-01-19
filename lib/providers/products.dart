@@ -12,19 +12,21 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     final url = Uri.parse(
-        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/');
+        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/products.json');
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
-        loadedProducts.add(Product(
-            description: prodData['description'],
-            id: prodId,
-            imageUrl: prodData['imageUrl'],
-            price: prodData['price'],
-            isFavorite: prodData['isFavorite'],
-            title: prodData['title']));
+        loadedProducts.add(
+          Product(
+              description: prodData['description'],
+              id: prodId,
+              imageUrl: prodData['imageUrl'],
+              price: prodData['price'],
+              isFavorite: prodData['isFavorite'],
+              title: prodData['title']),
+        );
       });
       _items = loadedProducts;
       notifyListeners();

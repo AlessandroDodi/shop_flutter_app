@@ -26,15 +26,16 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   @override
   void initState() {
     super.initState();
-    _isInit = true;
   }
 
   @override
   void didChangeDependencies() {
     if (!_isInit) {
-      super.didChangeDependencies();
       Provider.of<Products>(context).fetchAndSetProducts();
+      super.didChangeDependencies();
     }
+
+    _isInit = true;
   }
 
   bool showFavorites = false;
@@ -50,7 +51,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
         actions: [
           PopupMenuButton(
             onSelected: (value) => setState(() {
-              showFavorites = value == FilterOptions.Favorites ? true : false;
+              showFavorites = (value == FilterOptions.Favorites) ? true : false;
             }),
             itemBuilder: (_) => [
               const PopupMenuItem(

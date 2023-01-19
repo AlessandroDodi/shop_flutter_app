@@ -76,14 +76,28 @@ class Products with ChangeNotifier {
     return _items.firstWhere((element) => element.id == id);
   }
 
-  void updateProduct(String productId, Product newProduct) {
+  Future<void> updateProduct(String productId, Product newProduct) async {
     var index = _items.indexWhere((element) => element.id == productId);
-    _items[index] = Product(
-        description: newProduct.description,
-        id: newProduct.id,
-        imageUrl: newProduct.imageUrl,
-        price: newProduct.price,
-        title: newProduct.title);
-    notifyListeners();
+    final url = Uri.parse(
+        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/products/$productId.json');
+    if (index >= 0) {
+      http.patch(url,
+          body: json.encode(
+            {
+              'title': newProduct.title,
+              'price': newProduct.price,
+              'description': newProduct.description,
+              'imageUrl': newProduct.imageUrl,
+            },
+          ));
+
+      _items[index] = Product(
+          description: newProduct.description,
+          id: newProduct.id,
+          imageUrl: newProduct.imageUrl,
+          price: newProduct.price,
+          title: newProduct.title);
+      notifyListeners();
+    }
   }
 }

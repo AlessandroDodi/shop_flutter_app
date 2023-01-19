@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_flutter_app/providers/cart.dart' show Cart;
-import 'package:shop_flutter_app/providers/orders.dart';
-import 'package:shop_flutter_app/widgets/cart_item.dart';
+
+import '../providers/cart.dart' show Cart;
+import '../widgets/cart_item.dart';
+import '../providers/orders.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
@@ -13,50 +14,56 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Your cart')),
+      appBar: AppBar(
+        title: const Text('Your Cart'),
+      ),
       body: Column(
-        children: [
+        children: <Widget>[
           Card(
-            margin: const EdgeInsets.all(10),
+            margin: const EdgeInsets.all(15),
             child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Row(
-                  children: [
-                    const Text(
-                      'total',
-                      style: TextStyle(fontSize: 20),
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  const Text(
+                    'Total',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  const Spacer(),
+                  Chip(
+                    label: Text(
+                      '\$${cart.totalAmount.toStringAsFixed(2)}',
                     ),
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Chip(
-                        label: Text('\$${cart.totalAmount}'),
-                        backgroundColor: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          Provider.of<Orders>(context, listen: false).addOrder(
-                              cart.items.values.toList(), cart.totalAmount);
-                          cart.clear();
-                        },
-                        child: const Text('Order now'))
-                  ],
-                )),
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                  ElevatedButton(
+                    child: const Text('ORDER NOW'),
+                    onPressed: () {
+                      Provider.of<Orders>(context, listen: false).addOrder(
+                        cart.items.values.toList(),
+                        cart.totalAmount,
+                      );
+                      cart.clear();
+                    },
+                  )
+                ],
+              ),
+            ),
           ),
-          SizedBox(
-              height: 500,
-              child: Expanded(
-                child: ListView.builder(
-                  itemCount: cart.itemCount,
-                  itemBuilder: (context, index) => CartItem(
-                      id: cart.items.values.toList()[index].id,
-                      productId: cart.items.keys.toList()[index],
-                      title: cart.items.values.toList()[index].title,
-                      price: cart.items.values.toList()[index].price,
-                      quantity: cart.items.values.toList()[index].quantity),
-                ),
-              ))
+          const SizedBox(height: 10),
+          Expanded(
+            child: ListView.builder(
+              itemCount: cart.items.length,
+              itemBuilder: (ctx, i) => CartItem(
+                cart.items.values.toList()[i].id,
+                cart.items.keys.toList()[i],
+                cart.items.values.toList()[i].price,
+                cart.items.values.toList()[i].quantity,
+                cart.items.values.toList()[i].title,
+              ),
+            ),
+          )
         ],
       ),
     );

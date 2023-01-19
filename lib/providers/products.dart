@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop_flutter_app/models/http_exception.dart';
 import 'dart:convert';
 import 'product.dart';
 
@@ -64,7 +65,21 @@ class Products with ChangeNotifier {
   }
 
   void removeProduct(String productId) {
-    _items.removeWhere((element) => productId == element.id);
+    final url = Uri.parse(
+        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/products/$productId.json');
+
+    final existingProductIndex =
+        _items.indexWhere((element) => element.id == productId);
+    // ignore: unused_local_variable
+    final existingProduct = _items[existingProductIndex];
+    http.delete(url).then((response) {
+      if (response.statusCode >= 400) {
+        throw HttpException('Could not delete product');
+      }
+    }).catchError((onError) {
+      _items.insert(existingProductIndex, existingProduct);
+    });
+    _items.removeAt(existingProductIndex);
     notifyListeners();
   }
 

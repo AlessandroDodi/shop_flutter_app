@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_flutter_app/providers/cart.dart';
 import 'package:shop_flutter_app/providers/orders.dart';
 import 'package:shop_flutter_app/providers/products.dart';
+import 'package:shop_flutter_app/screens/auth_screen.dart';
 import 'package:shop_flutter_app/screens/cart_screen.dart';
 import 'package:shop_flutter_app/screens/edit_product_screen.dart';
 import 'package:shop_flutter_app/screens/orders_screen.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.teal)
               .copyWith(secondary: Colors.teal[200]),
         ),
-        home: const ProductOverviewScreen(),
+        home: AuthScreen(),
         routes: {
           ProductDetailScreen.routeName: (context) =>
               const ProductDetailScreen(),
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
           EditProductScreen.routeName: ((context) => const EditProductScreen()),
           UserProductsScreen.routeName: ((context) =>
               const UserProductsScreen()),
+          AuthScreen.routeName: ((context) => AuthScreen()),
         },
       ),
     );

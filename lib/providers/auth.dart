@@ -4,9 +4,23 @@ import 'package:http/http.dart' as http;
 import 'package:shop_flutter_app/models/http_exception.dart';
 
 class Auth with ChangeNotifier {
-  // String _token;
-  // DateTime _expiryDate;
-  // String _userId;
+  String? _token;
+  DateTime? _expiryDate;
+  String? _userId;
+
+  bool get isAuth {
+    return _token != null;
+  }
+
+  String? get token {
+    if (_expiryDate != null &&
+        _expiryDate!.isAfter(DateTime.now()) &&
+        _token != "") {
+      print('mi sa che non entra qui');
+      return _token;
+    }
+    return null;
+  }
 
   Future<void> _authenticate(
       String email, String password, String urlSegment) async {
@@ -22,9 +36,26 @@ class Auth with ChangeNotifier {
       if (json.decode(response.body)['error'] != null) {
         throw HttpException(json.decode(response.body)['error']['message']);
       }
+      //print(json.decode(response.body));
+      _token = json.decode(response.body)['idToken'];
+
+      _userId = json.decode(response.body)['localId'];
+      _expiryDate = DateTime.now().add(
+        Duration(
+          seconds: int.parse(
+            json.decode(response.body)['expiresIn'],
+          ),
+        ),
+      );
+      print(_token);
+      print("--------------------------------");
+      print(_userId);
+      print("--------------------------------");
+      print(_expiryDate);
     } catch (e) {
       throw e;
     }
+    notifyListeners();
   }
 
   Future<void> signup(String email, String password) async {

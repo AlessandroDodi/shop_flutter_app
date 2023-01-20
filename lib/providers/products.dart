@@ -5,15 +5,17 @@ import 'dart:convert';
 import 'product.dart';
 
 class Products with ChangeNotifier {
-  List<Product> _items = [];
-
+  List<Product> _items;
+  final String authToken;
   List<Product> get items {
     return [..._items];
   }
 
+  Products(this.authToken, this._items);
+
   Future<void> fetchAndSetProducts() async {
     final url = Uri.parse(
-        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/products.json');
+        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=$authToken');
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;

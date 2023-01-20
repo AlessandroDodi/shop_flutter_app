@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop_flutter_app/models/http_exception.dart';
 
 class Auth with ChangeNotifier {
   // String _token;
@@ -11,12 +12,19 @@ class Auth with ChangeNotifier {
       String email, String password, String urlSegment) async {
     final url =
         Uri.parse('$urlSegment?key=AIzaSyAVcGADFolGpajOuFhvvIqHjcjazkkHjFw');
-    final response = await http.post(url,
-        body: json.encode({
-          'email': email,
-          'password': password,
-          'returnSecureToken': true,
-        }));
+    try {
+      final response = await http.post(url,
+          body: json.encode({
+            'email': email,
+            'password': password,
+            'returnSecureToken': true,
+          }));
+      if (json.decode(response.body)['error'] != null) {
+        throw HttpException(json.decode(response.body)['error']['message']);
+      }
+    } catch (e) {
+      throw e;
+    }
   }
 
   Future<void> signup(String email, String password) async {

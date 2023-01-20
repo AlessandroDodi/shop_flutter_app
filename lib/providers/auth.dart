@@ -22,6 +22,12 @@ class Auth with ChangeNotifier {
     }
     return null;
   }
+  void logout() {
+    _token = null;
+    _expiryDate = null;
+    _userId = null;
+    notifyListeners();
+}
 
   Future<void> _authenticate(
       String email, String password, String urlSegment) async {

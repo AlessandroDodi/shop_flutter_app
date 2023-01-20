@@ -42,6 +42,7 @@ void _autoLogout() {
   }
   final time = _expiryDate?.difference(DateTime.now()).inSeconds;
   _authTimer =  Timer(Duration(seconds:time ?? 0), logout);
+  notifyListeners();
 }
 
   Future<void> _authenticate(
@@ -78,22 +79,50 @@ void _autoLogout() {
     }
     notifyListeners();
   }
-  Future<bool> tryAutoLogin() async {
+  Future<bool> tryAutoLogin2() async {
+    print('va');
+    
     final prefs = await SharedPreferences.getInstance();
+    print(prefs.containsKey('userData'));
     if (!prefs.containsKey('userData')) {
+      print('qui?');
+      
       return false;
     }
     final extractedUserData = json.decode(prefs.getString('userData') ?? '') as Map<String, Object>;
-    //if(extractedUserData['expiryDate'] == null) return false;
+    print("userdata: $extractedUserData");
+    //if(extractedUserData['e"xpiryDate'] == null) return false;
     final expiryDate = DateTime.parse(extractedUserData['expiryDate'].toString());
     if(expiryDate.isBefore(DateTime.now())) {
-    return false;
+      notifyListeners();
+      return false;
     }
     _token = extractedUserData['token'].toString();
     _userId = extractedUserData['userId'].toString();
     _expiryDate = expiryDate;
     _autoLogout();
+    return true;
+  }
+    Future<bool> tryAutoLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userData')) {
+      return false;
+    }
+    final temp = prefs.getString('userData');
+    if(temp == null) {
+      return false;
+    }
+    final extractedUserData = json.decode(temp) as Map<String, Object>;
+    final expiryDate = DateTime.parse(extractedUserData['expiryDate'].toString());
+
+    if (expiryDate.isBefore(DateTime.now())) {
+      return false;
+    }
+    _token = extractedUserData['token'].toString();
+    _userId = extractedUserData['userId'].toString();
+    _expiryDate = expiryDate;
     notifyListeners();
+    _autoLogout();
     return true;
   }
 

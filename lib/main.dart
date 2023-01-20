@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.teal)
                 .copyWith(secondary: Colors.teal[200]),
           ),
-          home: auth.isAuth ? ProductOverviewScreen() : AuthScreen(),
+          home: auth.isAuth ? const ProductOverviewScreen() : const AuthScreen(),
           routes: {
             ProductDetailScreen.routeName: (context) =>
                 const ProductDetailScreen(),
@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
                 const EditProductScreen()),
             UserProductsScreen.routeName: ((context) =>
                 const UserProductsScreen()),
-            AuthScreen.routeName: ((context) => AuthScreen()),
+            AuthScreen.routeName: ((context) => const AuthScreen()),
           },
         ),
       ),

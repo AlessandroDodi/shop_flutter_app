@@ -67,7 +67,7 @@ void _autoLogout() {
       );
       _autoLogout();
     } catch (e) {
-      throw e;
+      rethrow;
     }
     notifyListeners();
   }

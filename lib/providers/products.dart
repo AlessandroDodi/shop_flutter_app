@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -27,7 +26,6 @@ class Products with ChangeNotifier {
             'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/userFavorites/$userId.json?auth=$authToken'),
       );
       final favoriteData = json.decode(favoiteResponse.body);
-      print("favoritedata:$favoriteData");
       final List<Product> loadedProducts = [];
       //if (extractedData == null) return;
       extractedData.forEach((prodId, prodData) {
@@ -46,8 +44,8 @@ class Products with ChangeNotifier {
       });
       _items = loadedProducts;
       notifyListeners();
+    // ignore: empty_catches
     } catch (e) {
-      print(e);
     }
   }
 

@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -12,6 +14,8 @@ enum AuthMode { Signup, Login }
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
 
+  const AuthScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -25,17 +29,17 @@ class AuthScreen extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color.fromARGB(255, 1, 53, 131).withOpacity(0.5),
-                  Color.fromARGB(255, 54, 5, 110).withOpacity(0.9),
+                  const Color.fromARGB(255, 1, 53, 131).withOpacity(0.5),
+                  const Color.fromARGB(255, 54, 5, 110).withOpacity(0.9),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                stops: [0, 1],
+                stops: const [0, 1],
               ),
             ),
           ),
           SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
               height: deviceSize.height,
               width: deviceSize.width,
               child: Column(
@@ -52,9 +56,9 @@ class AuthScreen extends StatelessWidget {
                       // ..translate(-10.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Color.fromARGB(255, 0, 17, 171),
-                        boxShadow: [
-                          const BoxShadow(
+                        color: const Color.fromARGB(255, 0, 17, 171),
+                        boxShadow: const [
+                          BoxShadow(
                             blurRadius: 8,
                             color: Colors.black26,
                             offset: Offset(0, 2),
@@ -73,7 +77,7 @@ class AuthScreen extends StatelessWidget {
                   ),
                   Flexible(
                     flex: deviceSize.width > 600 ? 2 : 1,
-                    child: AuthCard(),
+                    child: const AuthCard(),
                   ),
                 ],
               ),
@@ -86,14 +90,17 @@ class AuthScreen extends StatelessWidget {
 }
 
 class AuthCard extends StatefulWidget {
+  const AuthCard({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _AuthCardState createState() => _AuthCardState();
 }
 
 class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
-  Map<String, String> _authData = {
+  final Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
@@ -103,12 +110,12 @@ class _AuthCardState extends State<AuthCard> {
     showDialog(
       context: context,
       builder: ((context) => AlertDialog(
-            title: Text('An error occured!'),
+            title: const Text('An error occured!'),
             content: Text(message),
             actions: [
               ElevatedButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('Okay'),
+                child: const Text('Okay'),
               ),
             ],
           )),
@@ -231,6 +238,7 @@ class _AuthCardState extends State<AuthCard> {
                             if (value != _passwordController.text) {
                               return 'Passwords do not match!';
                             }
+                            return null;
                           }
                         : null,
                   ),

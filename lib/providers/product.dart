@@ -19,10 +19,10 @@ class Product with ChangeNotifier {
       required this.price,
       required this.title});
 
-  Future<void> toggleFavorite() async {
+  Future<void> toggleFavorite(String token) async {
     final oldStatus = isFavorite;
     final url = Uri.parse(
-        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json');
+        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json?auth=$token');
     try {
       final response = await http.patch(url,
           body: json.encode({

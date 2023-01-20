@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_flutter_app/providers/auth.dart';
 import 'package:shop_flutter_app/providers/cart.dart';
 import 'package:shop_flutter_app/providers/product.dart';
 import '../screens/product_detail_screen.dart';
@@ -28,7 +29,8 @@ class ProductItem extends StatelessWidget {
                         ? Icons.favorite
                         : Icons.favorite_border),
                     color: Theme.of(context).colorScheme.secondary,
-                    onPressed: () => product.toggleFavorite(),
+                    onPressed: () => product
+                        .toggleFavorite(Provider.of<Auth>(context).token ?? ''),
                   )),
             ),
             trailing: IconButton(

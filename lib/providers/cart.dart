@@ -13,27 +13,29 @@ class CartItem {
 }
 
 class Cart with ChangeNotifier {
-  Map<String, CartItem> _items = {};
+  Map<String, CartItem>? _items;
+  final String authToken;
+  Cart(this.authToken, this._items);
 
   Map<String, CartItem> get items {
-    return {..._items};
+    return {...?_items};
   }
 
   int get itemCount {
-    return _items.length;
+    return _items?.length ?? 0;
   }
 
   double get totalAmount {
     var total = 0.0;
-    _items.forEach((key, value) {
+    _items?.forEach((key, value) {
       total += value.price * value.quantity;
     });
     return total;
   }
 
   void addItem(String productId, double price, String title) {
-    if (_items.containsKey(productId)) {
-      _items.update(
+    if (_items!.containsKey(productId)) {
+      _items?.update(
         productId,
         (value) => CartItem(
             id: value.id,
@@ -42,7 +44,7 @@ class Cart with ChangeNotifier {
             quantity: value.quantity + 1),
       );
     } else {
-      _items.putIfAbsent(
+      _items?.putIfAbsent(
         productId,
         () => CartItem(
             id: DateTime.now().toString(),
@@ -56,7 +58,7 @@ class Cart with ChangeNotifier {
   }
 
   void removeItem(String productId) {
-    _items.remove(productId);
+    _items?.remove(productId);
 
     notifyListeners();
   }
@@ -67,11 +69,11 @@ class Cart with ChangeNotifier {
   }
 
   void removeSingleItem(String productId) {
-    if (!_items.containsKey(productId)) {
+    if (!_items!.containsKey(productId)) {
       return;
     }
-    if (_items[productId]!.quantity > 1) {
-      _items.update(
+    if (_items![productId]!.quantity > 1) {
+      _items?.update(
           productId,
           (value) => CartItem(
               id: value.id,
@@ -79,7 +81,7 @@ class Cart with ChangeNotifier {
               quantity: value.quantity - 1,
               price: value.price));
     } else {
-      _items.remove(productId);
+      _items?.remove(productId);
     }
     notifyListeners();
   }

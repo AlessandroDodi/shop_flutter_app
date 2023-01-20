@@ -18,14 +18,17 @@ class OrderItem {
 
 class Orders with ChangeNotifier {
   // ignore: prefer_final_fields
-  List<OrderItem> _orders = [];
+  final String authToken;
+  List<OrderItem> _orders;
   List<OrderItem> get orders {
     return [..._orders];
   }
 
+  Orders(this.authToken, this._orders);
+
   Future<void> fetchAndSetOrders() async {
     final url = Uri.parse(
-        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/orders.json');
+        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/orders.json?auth=$authToken');
     final response = await http.get(url);
     final List<OrderItem> loadedOrders = [];
     final extractedData = json.decode(response.body) as Map<String, dynamic>;

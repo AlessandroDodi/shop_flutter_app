@@ -41,7 +41,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url = Uri.parse(
-        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/products.json');
+        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=$authToken');
 
     try {
       final response = await http.post(
@@ -69,7 +69,7 @@ class Products with ChangeNotifier {
 
   void removeProduct(String productId) {
     final url = Uri.parse(
-        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/products/$productId.json');
+        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/products/$productId.json?auth=$authToken');
 
     final existingProductIndex =
         _items.indexWhere((element) => element.id == productId);
@@ -97,7 +97,7 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(String productId, Product newProduct) async {
     var index = _items.indexWhere((element) => element.id == productId);
     final url = Uri.parse(
-        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/products/$productId.json');
+        'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/products/$productId.json?auth=$authToken');
     if (index >= 0) {
       http.patch(url,
           body: json.encode(

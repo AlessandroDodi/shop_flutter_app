@@ -7,11 +7,12 @@ import 'product.dart';
 class Products with ChangeNotifier {
   List<Product> _items;
   final String authToken;
+  final String userId;
   List<Product> get items {
     return [..._items];
   }
 
-  Products(this.authToken, this._items);
+  Products(this.authToken, this._items, this.userId);
 
   Future<void> fetchAndSetProducts() async {
     final url = Uri.parse(
@@ -24,12 +25,13 @@ class Products with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
           Product(
-              description: prodData['description'],
-              id: prodId,
-              imageUrl: prodData['imageUrl'],
-              price: prodData['price'],
-              isFavorite: prodData['isFavorite'],
-              title: prodData['title']),
+            description: prodData['description'],
+            id: prodId,
+            imageUrl: prodData['imageUrl'],
+            price: prodData['price'],
+            isFavorite: prodData['isFavorite'],
+            title: prodData['title'],
+          ),
         );
       });
       _items = loadedProducts;

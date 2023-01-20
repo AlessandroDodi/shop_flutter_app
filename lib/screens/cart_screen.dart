@@ -38,6 +38,7 @@ class CartScreen extends StatelessWidget {
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
                   ElevatedButton(
+                    style: ButtonStyle(),
                     child: const Text('ORDER NOW'),
                     onPressed: () {
                       if (cart.totalAmount >= 0) {

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop_flutter_app/models/http_exception.dart';
@@ -20,6 +22,12 @@ class Products with ChangeNotifier {
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final favoiteResponse = await http.get(
+        Uri.parse(
+            'https://w-flutter-meals-default-rtdb.europe-west1.firebasedatabase.app/userFavorites/$userId.json?auth=$authToken'),
+      );
+      final favoriteData = json.decode(favoiteResponse.body);
+      print("favoritedata:$favoriteData");
       final List<Product> loadedProducts = [];
       //if (extractedData == null) return;
       extractedData.forEach((prodId, prodData) {
@@ -29,7 +37,9 @@ class Products with ChangeNotifier {
             id: prodId,
             imageUrl: prodData['imageUrl'],
             price: prodData['price'],
-            isFavorite: prodData['isFavorite'],
+            isFavorite:
+                favoriteData?[prodId]?['isFavorite'].toString().toLowerCase() ==
+                    'true',
             title: prodData['title'],
           ),
         );
@@ -37,7 +47,7 @@ class Products with ChangeNotifier {
       _items = loadedProducts;
       notifyListeners();
     } catch (e) {
-      rethrow;
+      print(e);
     }
   }
 

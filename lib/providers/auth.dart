@@ -20,7 +20,6 @@ class Auth with ChangeNotifier {
     if (_expiryDate != null &&
         _expiryDate!.isAfter(DateTime.now()) &&
         _token != "") {
-      print('mi sa che non entra qui');
       return _token;
     }
     return null;
@@ -51,11 +50,6 @@ class Auth with ChangeNotifier {
           ),
         ),
       );
-      print(_token);
-      print("--------------------------------");
-      print(_userId);
-      print("--------------------------------");
-      print(_expiryDate);
     } catch (e) {
       throw e;
     }

@@ -19,12 +19,12 @@ class OrderItem {
 class Orders with ChangeNotifier {
   // ignore: prefer_final_fields
   final String authToken;
-  List<OrderItem> _orders;
+  List<OrderItem> _orders = [];
   List<OrderItem> get orders {
     return [..._orders];
   }
 
-  Orders(this.authToken, this._orders);
+  Orders(this.authToken);
 
   Future<void> fetchAndSetOrders() async {
     final url = Uri.parse(

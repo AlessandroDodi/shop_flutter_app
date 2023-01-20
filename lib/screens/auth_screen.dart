@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:shop_flutter_app/models/http_exception.dart';
 import 'package:shop_flutter_app/providers/auth.dart';
 
+import 'package:darq/darq.dart';
+
 enum AuthMode { Signup, Login }
 
 class AuthScreen extends StatelessWidget {
@@ -134,18 +136,20 @@ class _AuthCardState extends State<AuthCard> {
             .signup(_authData['email']!, _authData['password']!);
       }
     } on HttpException catch (e) {
-      var errorMessage = "Authentication failed";
-      if (e.toString().contains('EMAIL_EXISTS')) {
-        errorMessage = "This email address already exists";
-      } else if (e.toString().contains('INVALID_EMAIL')) {
-        errorMessage = "This is not a valid email address";
-      } else if (e.toString().contains('WEAK_PASSWORD')) {
-        errorMessage = "This password is too weak";
-      } else if (e.toString().contains('EMAIL_NOT_FOUND')) {
-        errorMessage = "Could not find this email address";
-      } else if (e.toString().contains('INVALID_PASSWORD')) {
-        errorMessage = "Invalid password";
-      }
+      const errors = {
+        'EMAIL_EXISTS': "This email address already exists",
+        'INVALID_EMAIL': "This is not a valid email address",
+        'WEAK_PASSWORD': "This password is too weak",
+        'EMAIL_NOT_FOUND': "Could not find this email address",
+        'INVALID_PASSWORD': "Invalid password",
+      };
+
+      var errorMessage = errors.entries
+        .where((p) => e.toString().contains(p.key))
+        .firstOrDefault()
+        ?.value
+        ?? 'Authentication failed';
+
       _showErrorDialog(errorMessage);
     } catch (e) {
       const errorMessage =
